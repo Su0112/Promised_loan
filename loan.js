@@ -8,7 +8,7 @@ let creditLimit = 5000;
 const loanOut = function(amount) {
   return new Promise((resolve, reject) => {
     if (creditLimit <= 0) {
-      reject("Limit is reached");
+      reject("Insufficient Funds");
     } else if (creditLimit < amount) {
       const remainingLimit = creditLimit;
       creditLimit = 0;
@@ -19,6 +19,12 @@ const loanOut = function(amount) {
     }
   });
 };
-loanOut(10000)
-  .then(loanedAmount => console.log(`Loan approved: $${loanedAmount}`))
-  .catch(error => console.error(`Loan denied: ${error}`));
+
+console.log("Asking for $150, which should be okay ...");
+loanOut(150)
+  .then((amountReceived) => {
+    console.log(`\t-> I got $${amountReceived} loan from the bank! Remaining Credit Limit: $${creditLimit}`);
+  })
+  .catch((err) => {
+    console.log(`\t-> Error: ${err}!`);
+  });
